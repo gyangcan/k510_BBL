@@ -111,6 +111,57 @@ trap_vector:
   wfi
   j 1b
 1:
+  andi a1, a0, IPI_DCACHE_WB
+  beqz a1, 1f
+  STORE ra, 1*REGBYTES(sp)
+  STORE t1, 6*REGBYTES(sp)
+  //a0--10
+  //a1--11 
+  STORE a2,12*REGBYTES(sp)
+  STORE a3,13*REGBYTES(sp)
+  STORE a4,14*REGBYTES(sp)
+  STORE a5,15*REGBYTES(sp)
+  STORE a6,16*REGBYTES(sp)
+  STORE a7,17*REGBYTES(sp)
+
+  jal x1, ipi_dcache_wb
+
+  LOAD ra, 1*REGBYTES(sp)
+  LOAD t1, 6*REGBYTES(sp)
+  //a0--10
+  //a1--11 
+  LOAD a2,12*REGBYTES(sp)
+  LOAD a3,13*REGBYTES(sp)
+  LOAD a4,14*REGBYTES(sp)
+  LOAD a5,15*REGBYTES(sp)
+  LOAD a6,16*REGBYTES(sp)
+  LOAD a7,17*REGBYTES(sp)
+1:
+  andi a1, a0, IPI_DCACHE_INVALID
+  beqz a1, 1f
+  STORE ra, 1*REGBYTES(sp)
+  STORE t1, 6*REGBYTES(sp)
+  //a0--10
+  //a1--11 
+  STORE a2,12*REGBYTES(sp)
+  STORE a3,13*REGBYTES(sp)
+  STORE a4,14*REGBYTES(sp)
+  STORE a5,15*REGBYTES(sp)
+  STORE a6,16*REGBYTES(sp)
+  STORE a7,17*REGBYTES(sp)
+
+  jal x1, ipi_dcache_invalid
+  LOAD ra, 1*REGBYTES(sp)
+  LOAD t1, 6*REGBYTES(sp)
+  //a0--10
+  //a1--11
+  LOAD a2,12*REGBYTES(sp)
+  LOAD a3,13*REGBYTES(sp)
+  LOAD a4,14*REGBYTES(sp)
+  LOAD a5,15*REGBYTES(sp)
+  LOAD a6,16*REGBYTES(sp)
+  LOAD a7,17*REGBYTES(sp)
+1:
   /* PLIC_SW Complete */
   LOAD a1, MENTRY_PLIC_SW_CLAIM(sp)
   lw a0, MENTRY_PLIC_SW_SOURCE_ID(sp)
